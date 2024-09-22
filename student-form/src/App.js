@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function StudentForm() {
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; 
   const [studentData, setStudentData] = useState({
     name: "",
     dob: "",
@@ -21,9 +22,14 @@ function StudentForm() {
   };
 
   const handleFileChange = (e) => {
-    setStudentData({                              // student file change (pic and signature pic)
+    const file = e.target.files[0];
+    if (file && file.size > MAX_FILE_SIZE) {
+      alert("File size is greater than 2MB");
+      return;
+    }
+    setStudentData({
       ...studentData,
-      [e.target.name]: e.target.files[0],
+      [e.target.name]: file,
     });
   };
   const handleDeleteImage = (type) => {
